@@ -34,6 +34,7 @@ class serialDevice(serial.Serial):
 
         # Fetch the entire serial stream as a string
         packet  =   str( self.read_all() )
+        #print(packet)
 
         # Sometimes it takes a few seconds before the serial stream starts to spit out actual values. The try/except loop returns a list of
         # None-values if no sensor values are found.
@@ -44,13 +45,17 @@ class serialDevice(serial.Serial):
             # so fetch the one before. This introduces a slight lag, but the baudrate should be so fast that it doesn't really matter.
             stream  =   packet.split("\\n")[-2].rstrip("\\r")
 
+
             # Check if the string starts with b', in that case remove it
             if stream.startswith("b'"):
 
                 stream  =   stream[2:]
 
             # Separate string into the sensor/value-pairs using "," as the divider.
-            pairs  =   stream.split(",")
+            if "," in stream:
+                pairs  =   stream.split(",")
+            else:
+                pairs   =   [stream]
 
             # Add the pairs to the dictionary
 
@@ -69,6 +74,7 @@ class serialDevice(serial.Serial):
                     if split[0] in sensors:
 
                         sensorData[split[0]]    =   split[1]
+
 
             if len(sensorData) == 0:
 
@@ -92,6 +98,14 @@ class serialDevice(serial.Serial):
         """
 
         self.baudrate = newBaudrate
+
+    def newPort(self, newPort: str) -> None:
+        """
+        Chooses a new port as input.
+        :param newPort: Thw name of the new port.
+        """
+        self.port = newPort
+        self.open()
 
     @staticmethod
     def fetchPorts() -> list[str]|None:

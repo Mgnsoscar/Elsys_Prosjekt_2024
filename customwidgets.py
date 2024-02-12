@@ -542,8 +542,6 @@ class mylabel(qw.QLabel):
         pixmap = qg.QPixmap(imagePath)
         self.setPixmap(pixmap)
 
-
-
 class myinput(qw.QLineEdit):
 
     def __init__(self, Master, objectName=None, label=None, color=None, add=None, radius=None,
@@ -687,7 +685,6 @@ class myinput(qw.QLineEdit):
         self.vali = qg.QRegExpValidator(self.regx, self)
         self.setValidator(self.vali)
 
-
 class myscroll(qw.QFrame):
     def __init__(self, Master):
         qw.QFrame.__init__(self, Master)
@@ -778,7 +775,6 @@ class myscroll(qw.QFrame):
                 self.scrollframeLay.setContentsMargins(0, 0, 11, 0)
                 qw.QApplication.processEvents()
         return False
-
 
 class mystack(qw.QStackedWidget):
 

@@ -16,6 +16,7 @@ class GUI(Qw.QMainWindow):
         self.setCentralWidget(self.cw)  # ,  self.cf.addstyle("image", "border-image: url(:/images/Background3.jpg);")
 
         GUI._initMainframe(self)
+        GUI.initStatusbar(self)
         GUI._initGameFrame(self)
 
     def _initMainframe(self) -> None:
@@ -23,28 +24,62 @@ class GUI(Qw.QMainWindow):
         # Create 4 main frames
         mainframe = {}
 
-        for i in range(1, 3):
+        for i in range(1, 4):
             mainframe[str(i)] = myframe(self.cf, "h", f"mainframe{i}", add=True)
 
-        mainframe["1"].margins(10, 10, 10, 10),     mainframe["1"].setMinimumHeight(150),   mainframe["1"].setMinimumHeight(350)
-        mainframe["2"].customradius(0, 0, 10, 10),  mainframe["2"].setFixedHeight(10)
-
-        #mainframe["1"].addstyle("border-image", "border-image: url(elmic.jpg);")
+        mainframe["1"].margins(0, 0, 0, 0),     mainframe["1"].setMinimumHeight(30),    mainframe["1"].setMaximumHeight(30)
+        mainframe["1"].addstyle("background-color", "background-color: rgba(200, 200, 200, 255)")
+        mainframe["2"].margins(10, 10, 10, 10),     mainframe["2"].setMinimumHeight(150)
+        mainframe["3"].customradius(0, 0, 10, 10),  mainframe["3"].setFixedHeight(10)
 
         self.mainframe = mainframe
 
+    def initStatusbar(self):
+
+        # Create a combo box
+        self.combo_box = Qw.QComboBox()
+        self.combo_box.addItem("No port selected...")
+        self.combo_box.setStyleSheet("color: black; background-color: white; radius:0;")
+        self.combo_box.activated[str].connect(self.on_combo_box_activated)
+        #framm = myframe(self.mainframe["1"], "h", color=(0, 100, 0, 100))
+
+        # Add the combo box to mainframe["1"]
+        self.mainframe["1"].lay.addWidget(self.combo_box)
+
+    def on_combo_box_activated(self, text):
+        text = text.split("-")
+        text = str(text[0])
+        text = text.strip()
+        self.serialDevice.newPort(text)
+
     def _initGameFrame(self) -> None:
+
+        temp = mystack(self.mainframe["2"], objectName="stacken", add=True)
+
+        valg = myframe(temp, "h", objectName="forste")
+        but = mybutton(valg, objectName="knappen", hover=(100, 100, 100, 100), add=True, text="Bytt")
+        but.clicked.connect(lambda: self.bytt())
+        volg = myframe(temp, "h", objectName="andre")
+
+        temp.addstack(valg, "forste")
+        temp.addstack(volg, "andre")
 
         contentFrames = {}
 
         for i in range(1, 4):
-            contentFrames[i] = myframe(self.mainframe["1"], "h", f"mainframe{i}", add=True)
+            contentFrames[i] = myframe(volg, "h", f"mainframe{i}", add=True)
 
         def initMidleContentFrame():
 
             image = mylabel(contentFrames[2], objectName="Image", add=True)
-            image.addImage("fly.png")
+            image.addImage("Resources/fly.png")
 
             self.image = image
 
         initMidleContentFrame()
+        self.temp = temp
+
+    def bytt(self):
+
+        self.temp.setCurrentIndex(1)
+        self.startSensorReadings(10)
