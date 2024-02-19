@@ -1,5 +1,6 @@
 from    customwidgets   import  *
 from    PyQt5           import  QtGui as Qg, QtCore as Qc, QtWidgets as Qw
+from Functions import Functions
 
 
 class GUI(Qw.QMainWindow):
@@ -46,11 +47,8 @@ class GUI(Qw.QMainWindow):
         # Add the combo box to mainframe["1"]
         self.mainframe["1"].lay.addWidget(self.combo_box)
 
-    def on_combo_box_activated(self, text):
-        text = text.split("-")
-        text = str(text[0])
-        text = text.strip()
-        self.serialDevice.newPort(text)
+    def on_combo_box_activated(self, text) -> None:
+        Functions.on_combo_box_activated(self, text)
 
     def _initGameFrame(self) -> None:
 
@@ -58,7 +56,7 @@ class GUI(Qw.QMainWindow):
 
         valg = myframe(temp, "h", objectName="forste")
         but = mybutton(valg, objectName="knappen", hover=(100, 100, 100, 100), add=True, text="Bytt")
-        but.clicked.connect(lambda: self.bytt())
+        but.clicked.connect(lambda: Functions.bytt(self))
         volg = myframe(temp, "h", objectName="andre")
 
         temp.addstack(valg, "forste")
@@ -78,8 +76,3 @@ class GUI(Qw.QMainWindow):
 
         initMidleContentFrame()
         self.temp = temp
-
-    def bytt(self):
-
-        self.temp.setCurrentIndex(1)
-        self.startSensorReadings(10)

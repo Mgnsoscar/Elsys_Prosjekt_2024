@@ -67,13 +67,13 @@ class serialDevice(serial.Serial):
                 # If no specific sensors are specified, add all values
                 if sensors is None:
 
-                    sensorData[split[0]]    =   split[1]
+                    sensorData[split[0]]    =   int(split[1])
 
                 else:
 
                     if split[0] in sensors:
 
-                        sensorData[split[0]]    =   split[1]
+                        sensorData[split[0]]    =   int(split[1])
 
 
             if len(sensorData) == 0:
