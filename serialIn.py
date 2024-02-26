@@ -34,7 +34,6 @@ class serialDevice(serial.Serial):
 
         # Fetch the entire serial stream as a string
         packet  =   str( self.read_all() )
-        #print(packet)
 
         # Sometimes it takes a few seconds before the serial stream starts to spit out actual values. The try/except loop returns a list of
         # None-values if no sensor values are found.
@@ -76,7 +75,7 @@ class serialDevice(serial.Serial):
                         sensorData[split[0]]    =   int(split[1])
 
 
-            if len(sensorData) == 0:
+            if len(sensorData.keys()) == 0:
 
                 sensorData  =   None
 

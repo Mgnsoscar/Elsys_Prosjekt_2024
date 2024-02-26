@@ -6,21 +6,10 @@ if TYPE_CHECKING:
 
 from PyQt5      import QtGui as qg, QtWidgets as qw, QtCore as qc
 import numpy as np
+import random
 
 
 class Functions:
-
-    @staticmethod
-    def bytt(obj: GUI) -> None:
-        """
-        Toggles the frame of the stack object in the GUI.
-        """
-        if obj.temp.currentIndex() == 0:
-            obj.temp.setCurrentIndex(1)
-        else:
-            obj.temp.setCurrentIndex(0)
-
-        #Functions.startSensorReadings(obj, 10)
 
     @staticmethod
     def on_combo_box_activated(obj: GUI|Program, text: str) -> None:
@@ -29,10 +18,11 @@ class Functions:
         defines a new port.
         :param text: The text clicked on in the combo box. Is automatically sent as a parameter.
         """
+        if text == "No port selected...":
+            return
         text = text.split("-")
         text = str(text[0])
         text = text.strip()
-        print(text)
         obj.serialDevice.newPort(text)
 
     @staticmethod
@@ -44,26 +34,6 @@ class Functions:
         ports = obj.serialDevice.fetchPorts()
         for port in ports:
             obj.combo_box.addItem(port)
-
-    @staticmethod
-    def _initSensorReadings(obj: Program) -> None:
-        """
-        Initialize the QTimer objects that schedules sensor readings.
-        """
-
-        # Create a QTimer object
-        obj.sensorReader  =   qc.QTimer(obj)
-
-        # Connect the timeout signal of the sensorReader to the function that rotates the plane
-        obj.sensorReader.timeout.connect(lambda: Functions._rotatePlane(obj))
-
-    @staticmethod
-    def startSensorReadings(obj: Program|GUI, rate: int = 10) -> None:
-        """
-        Starts reading sensor values from the serial device.
-        :param rate: How many readings pr. second.
-        """
-        obj.sensorReader.start(1000//rate)
 
     @staticmethod
     def stopSensorReadings(obj: Program) -> None:
@@ -80,7 +50,7 @@ class Functions:
     @staticmethod
     def _rotatePlane(obj: Program):
 
-        sensorValues = obj.serialDevice.readSerial(printToConsole = False)
+        sensorValues = obj.serialDevice.readSerial(printToConsole = True)
 
         if sensorValues is not None:
 
@@ -91,4 +61,14 @@ class Functions:
             # Rotate the label
             rotatedPixmap = qg.QPixmap("Resources/fly.png").transformed(qg.QTransform().rotate(obj.planeRotation))
             obj.image.setPixmap(rotatedPixmap)
-            obj.image.move(0, 10)
+            #obj.image.move(0, 10)
+
+    @staticmethod
+    def _rotateTargetbox(boxObj: Program):
+
+        random_integer = random.randint(-60, 60)
+            
+            # Rotate the label
+        rotatedPixmap = qg.QPixmap("Resources/greenbox.png").transformed(qg.QTransform().rotate(random_integer))
+        boxObj.setPixmap(rotatedPixmap)
+

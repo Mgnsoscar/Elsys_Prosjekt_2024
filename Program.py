@@ -7,7 +7,6 @@ class Program(GUI):
 
     __slots__ = ("serialDevice", "planeRotation", "sensorReader")
 
-    serialDevice:       serialDevice
     planeRotation:      int
     sensorReader:       Qc.QTimer
 
@@ -23,7 +22,7 @@ class Program(GUI):
         # Initialize the rotational value of the plane
         self.planeRotation = 0
 
-        Functions._initSensorReadings(self)
+        self._initSensorReadings()
 
-        #Functions.startSensorReadings(self, 10)
+        #self.startSensorReadings(self, 10)
 
