@@ -20,7 +20,7 @@ class Functions:
         else:
             obj.temp.setCurrentIndex(0)
 
-        Functions.startSensorReadings(obj, 10)
+        #Functions.startSensorReadings(obj, 10)
 
     @staticmethod
     def on_combo_box_activated(obj: GUI|Program, text: str) -> None:
@@ -71,6 +71,11 @@ class Functions:
         Makes the program stop fetching sensor values from the serial device.
         """
         obj.sensorReader.stop()
+
+    @staticmethod
+    def startGame(obj: Program) -> None:
+
+        pass
 
     @staticmethod
     def _rotatePlane(obj: Program):

@@ -69,8 +69,12 @@ class GUI(Qw.QMainWindow):
 
         def initMidleContentFrame():
 
-            image = mylabel(contentFrames[2], objectName="Image", add=True)
+            image = mylabel(contentFrames[2], objectName="Image")
             image.addImage("Resources/fly.png")
+
+            # Create transparent QWidget for overlay
+            overlay_widget = Qw.QWidget(contentFrames[2])
+            overlay_widget.setStyleSheet("background-color: rgba(255, 0, 0, 128)")  # Red with 50% opacity
 
             self.image = image
 
