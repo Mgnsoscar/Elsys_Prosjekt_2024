@@ -2,7 +2,7 @@ from __future__ import annotations
 from typing import *
 import serial.tools.list_ports
 
-class serialDevice(serial.Serial):
+class SerialDevice(serial.Serial):
 
     def __init__(self, baudrate: int, port: Optional[str] = None, timeout: Optional[int] = None ) -> None:
         """
